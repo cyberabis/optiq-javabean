@@ -1,5 +1,11 @@
 package io.thedal.optiq.javabean;
 
+/**
+ * A sample JavaBean for testing.
+ * 
+ * @author Abishek Baskaran
+ *
+ */
 public class User {
 
   private String name;

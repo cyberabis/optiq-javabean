@@ -12,12 +12,24 @@ import net.hydromatic.optiq.jdbc.OptiqConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class executes a sql query over an Optiq Schema
+ * 
+ * @author Abishek Baskaran
+ *
+ */
 public class JdbcQueryExecutor {
 
   final Logger logger = LoggerFactory.getLogger(JdbcQueryExecutor.class);
   private Connection connection;
   private Statement statement;
 
+  /**
+   * Constructor to instantiate a JdbcQueryExecutor
+   * 
+   * @param schema
+   *          The schema to execute queries.
+   */
   public JdbcQueryExecutor(JavaBeanSchema schema) {
     try {
       Class.forName("net.hydromatic.optiq.jdbc.Driver");
@@ -32,17 +44,30 @@ public class JdbcQueryExecutor {
     }
   }
 
+  /**
+   * Executes a SQL query.
+   * 
+   * @param sql
+   *          SQL query in string.
+   * @return JDBC result set.
+   */
   public ResultSet execute(String sql) {
     ResultSet results = null;
     try {
+      logger.debug("Creating a statement");
       statement = connection.createStatement();
+      logger.debug("Going to execute query: " + sql);
       results = statement.executeQuery(sql);
+      logger.debug("Execution complete");
     } catch (SQLException e) {
-      logger.error("Could not create a statement" + e);
+      logger.error("Could not create a statement.  " + e);
     }
     return results;
   }
 
+  /**
+   * Closed the connection and statement used for executing query.
+   */
   public void close() {
     if (connection != null) {
       try {
